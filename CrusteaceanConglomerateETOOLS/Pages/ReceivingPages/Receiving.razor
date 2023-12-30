@@ -1,0 +1,119 @@
+﻿@page "/receiving"
+
+<h3>Receiving</h3>
+
+@if (selectedOrder == null)
+{
+    @if (outstandingOrders == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else if (outstandingOrders.Count == 0)
+    {
+        <p>No outstanding orders found.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Order PO ID</th>
+                    <th>Order Date</th>
+                    <th>Vendor Name</th>
+                    <th>Vendor Phone</th>
+                    <th>Select</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in outstandingOrders)
+                {
+                    <tr>
+                        <td>@order.PurchaseOrderID</td>
+                        <td>@order.OrderDate?.ToString("yyyy-MM-dd")</td>
+                        <td>@(order.Vendor?.VendorName ?? "Unknown")</td>
+                        <td>@(order.Vendor?.Phone ?? "N/A")</td>
+                        <td><button @onclick="() => SelectOrder(order)">Select</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+else
+{
+    <h4>Selected Order Details</h4>
+    <p>Vendor Name: @(selectedOrder.Vendor?.VendorName ?? "Unknown")</p>
+    <p>Vendor Contact Phone: @(selectedOrder.Vendor?.Phone ?? "N/A")</p>
+    <h5>Purchase Order Details</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>StockItem ID</th>
+                <th>StockItem Description</th>
+                <th>Quantity On Order</th>
+                <th>Quantity Outstanding</th>
+                <th>Received Quantity</th>
+                <th>Returned Quantity</th>
+                <th>Return Reason</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var detail in orderDetailsViewModels)
+            {
+                <tr>
+                    <td>@detail.StockItemID</td>
+                    <td>@(detail.StockItem?.Description ?? "N/A")</td>
+                    <td>@detail.Quantity</td>
+                    <td>@detail.QuantityOutstanding()</td>
+                    <td><input type="number" @bind="detail.ReceivedQuantity" /></td>
+                    <td><input type="number" @bind="detail.ReturnedQuantity" /></td>
+                    <td><input type="text" @bind="detail.ReturnReason" /></td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+    <h5>Unordered Items</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>CID</th>
+                <th>Description</th>
+                <th>VSN</th>
+                <th>Qty</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in unorderedItemsCart)
+            {
+                <tr>
+                    <td><button @onclick="() => RemoveFromCart(item)">Remove</button></td>
+                    <td>@item.CID</td>
+                    <td>@item.Description</td>
+                    <td>@item.VendorPartNumber</td>
+                    <td>@item.Quantity</td>
+                </tr>
+            }
+            <tr>
+                <td><button @onclick="AddToCart">Insert</button></td>
+                <td>@(nextCID)</td>
+                <td><input type="text" @bind="newUnorderedItem.Description" /></td>
+                <td><input type="text" @bind="newUnorderedItem.VendorPartNumber" /></td>
+                <td><input type="number" @bind="newUnorderedItem.Quantity" /></td>
+                
+
+            </tr>
+        </tbody>
+    </table>
+    <button @onclick="ProcessOrder">Process Order</button>
+    <button @onclick="DeselectOrder">Cancel</button>
+    <input type="text" @bind="forceCloseReason" placeholder="Reason for force close" />
+    <button @onclick="ForceCloseOrder" disabled="@string.IsNullOrWhiteSpace(forceCloseReason)">Force Close</button>
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <p class="error-message">@errorMessage</p>
+    }
+
+}

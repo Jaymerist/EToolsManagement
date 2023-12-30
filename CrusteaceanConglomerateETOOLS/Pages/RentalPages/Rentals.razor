@@ -1,0 +1,101 @@
+﻿@page "/RentalPages/Rentals"
+
+<PageTitle>Rentals</PageTitle>
+<article>
+    <h1>Rentals</h1>
+
+    <div style="color: red; margin-bottom: 10px;">
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <p>@errorMessage</p>
+        }
+    </div>
+
+    <p>
+        <label>Customer Phone Number:</label>
+        <InputText id="phoneNumber" Style="Width: 140px; background-color: lightgray" @bind-Value="phoneNumber" />
+    </p>
+    <p>
+        <label>Coupon Code</label>
+        <InputText id="couponCode" Style="Width: 140px; background-color: lightgray" @bind-Value="couponCode" />
+    </p>
+    <button Variant="Variant.Filled" @onclick="Search" class="btn btn-primary">Search</button>
+    <button Variant="Variant.Filled" @onclick="Validate" class="btn btn-primary">Validate</button>
+
+    @if (customer != null)
+    {
+        <div style="border: 1px solid #ccc; padding: 10px; margin-top: 10px;">
+            <h4>Customer Information</h4>
+            <p><strong>Name:</strong> @customer.FirstName @customer.LastName</p>
+            <p><strong>Address:</strong> @customer.Address</p>
+        </div>
+    }
+
+    <div style="display: flex; gap: 20px; border: 1px solid #ddd; padding: 10px; border-radius: 8px;">
+        @if (availableEquipment != null && availableEquipment.Any())
+        {
+            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 8px;">
+                <h2>Available Equipment</h2>
+                <table style="border-collapse: collapse; width: 100%;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid #ddd;">
+                            <th>ID</th>
+                            <th>Description</th>
+                            <th>Serial #</th>
+                            <th>Rate</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var equipment in availableEquipment)
+                        {
+                            <tr style="border-bottom: 1px solid #ddd;">
+                                <td>@equipment.RentalEquipmentID</td>
+                                <td>@equipment.Description</td>
+                                <td>@equipment.SerialNumber</td>
+                                <td>@equipment.DailyRate</td>
+                                <td>
+                                    <button style="width: 120px;" @onclick="() => AddToRental(equipment)">Add to Rental</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+
+        @if (rentalEquipment != null && rentalEquipment.Any())
+        {
+            <div style="border: 1px solid #ddd; padding: 10px; border-radius: 8px;">
+                <h2>Rental Equipment</h2>
+                <table style="border-collapse: collapse; width: 100%;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid #ddd;">
+                            <th>ID</th>
+                            <th>Description</th>
+                            <th>Serial #</th>
+                            <th>Rate</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var equipment in rentalEquipment)
+                        {
+                            <tr style="border-bottom: 1px solid #ddd;">
+                                <td>@equipment.RentalEquipmentID</td>
+                                <td>@equipment.Description</td>
+                                <td>@equipment.SerialNumber</td>
+                                <td>@equipment.DailyRate</td>
+                                <td>
+                                    <button style="width: 120px;" @onclick="() => RemoveFromRental(equipment)">Remove</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <button @onclick="() => Rent(rentalsView)">Rent Equipment</button>
+            </div>
+        }
+    </div>
+</article>
+

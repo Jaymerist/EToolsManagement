@@ -1,0 +1,26 @@
+﻿body {
+}
+
+.goodMessage{
+    color: forestgreen;
+}
+
+
+.badMessage {
+    color: indianred;
+}
+
+button{
+    margin: 0 0.5rem;
+}
+
+.operations button {
+    margin: 0.5rem;
+    justify-content: end;
+}
+
+article{
+    padding: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}

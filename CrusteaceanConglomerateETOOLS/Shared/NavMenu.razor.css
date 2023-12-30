@@ -1,0 +1,42 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    background-color: #052e64;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+}
+
+    .brand img {
+        max-height: 6rem;
+        margin-right: 1rem;
+    }
+
+.brand-name {
+    color: #fff;
+    font-size: 1.5rem;
+}
+
+.nav-links {
+    display: flex;
+}
+
+    .nav-links a {
+        color: #fff;
+        text-decoration: none;
+        margin-left: 20px;
+        font-size: 1rem;
+    }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }

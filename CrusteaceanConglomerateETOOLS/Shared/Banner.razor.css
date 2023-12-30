@@ -1,0 +1,23 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+}
+
+.banner {
+    background-image: url('/img/banner.webp'); 
+    background-size: cover;
+    background-position: center;
+    height: 30rem; 
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.banner-text {
+
+    padding: 20px;
+    max-width: 600px;
+    text-align: right;
+    font-size: 2rem;
+    color: #333;
+}
